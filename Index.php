@@ -1,11 +1,11 @@
 <?php
 
-use Pizzeria\Model\Peoples\Address;
-use Pizzeria\Model\Peoples\People;
-
 require './vendor/autoload.php';
 
-$client = new People('jhones', new DateTime('1998-04-29'), new Address('joao zarpelon', '143b', 'costeira', '83015-183'));
+use Pizzeria\Model\Peoples\Address;
+use Pizzeria\Model\Peoples\Cpf;
+use Pizzeria\Model\Peoples\People;
 
-$client->getName();
-echo $client->getAddress()->setStreet('Paulo')->getStreet();
+$client = new People('jhones', '1998-04-29', new Address('joão zarpelon', '168', 'costeira', '83015-190'), new Cpf('03194808281'));
+
+echo $client->getAge();
