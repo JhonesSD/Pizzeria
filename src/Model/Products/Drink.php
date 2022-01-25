@@ -1,8 +1,10 @@
 <?php
 
-namespace Pizzeria\Model\Peoples;
+namespace Pizzeria\Model\Products;
 
-class Soda
+require './vendor/autoload.php';
+
+class Drink
 {
 
   private string $name;

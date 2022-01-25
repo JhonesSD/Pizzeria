@@ -1,10 +1,11 @@
 <?php
 
-namespace Pizzeria\Model\Peoples;
+namespace Pizzeria\Model\Products;
 
-class MiscellaneousProducts
+require './vendor/autoload.php';
+
+class Additional
 {
-
   private string $name;
   private float $price;
 
@@ -23,6 +24,7 @@ class MiscellaneousProducts
   {
     return $this->price;
   }
+
 
   public function setPrice($price): self
   {

@@ -1,15 +1,17 @@
 <?php
 
-namespace Pizzeria\Model\Peoples;
+namespace Pizzeria\Model\Products;
 
 require './vendor/autoload.php';
 
 Class PizzaSaize{
 
+  private string $name;
   private int $slice;
   private float $price;
 
-  public function __construct(int $slice, float $price) {
+  public function __construct(string $name, int $slice, float $price) {
+    $this->name = $name;
     $this->slice = $slice;
     $this->price = $price;
   }
@@ -29,5 +31,10 @@ Class PizzaSaize{
     $this->price = $price;
 
     return $this;
+  }
+
+  public function getName()
+  {
+    return $this->name;
   }
 }
