@@ -1,6 +1,6 @@
 <?php
 
-namespace Pizzeria\Model\Peoples;
+namespace Pizzeria\Domain\Model\People;
 
 require './vendor/autoload.php';
 
