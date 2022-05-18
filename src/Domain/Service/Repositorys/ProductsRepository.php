@@ -24,19 +24,49 @@ Class ProductsRepository implements ContractProductsRepository
     
   }
 
-  public function saveProducts(Products $product):bool
+  public function saveProducts(Products $product): bool
   {
-    $sqlQuery = "INSERT INTO tb_products (:NAME, :SIZE, :TYPE, :PRICE) VALUES (':NAME', ':SIZE', ':TYPE', ':PRICE')";
+    if($product->getId() === null){
+      return $this->insertProducts($product);
+    }
+
+    return $this->updateProducts($product);
+  }
+
+  public function updateProducts(Products $product): bool
+  {
+    $sqlQuery = "UPDATE tb_products SET NAME = :NAME, SIZE = :SIZE, TYPE = :TYPE, PRICE = :PRICE WHERE ID = :ID;";
     $stmt = $this->connection->prepare($sqlQuery);
 
-    $success = $stmt->execute([
-      ':NAME' => $product->getName(),
-      ':SIZE' => $product->getSize(),
-      ':TYPE' => $product->getType(),
-      'PRICE' => $product->getPrice()
-    ]);
+    $stmt->bindValue(':NAME', $product->getName(), PDO::PARAM_STR);
+    $stmt->bindValue(':SIZE', $product->getSize(), PDO::PARAM_STR);
+    $stmt->bindValue(':TYPE', $product->getType(), PDO::PARAM_STR);
+    $stmt->bindValue(':PRICE', $product->getPrice(), PDO::PARAM_INT);
+    $stmt->bindValue(':ID', $product->getId(), PDO::PARAM_INT);
 
-    return $success;
+    return $stmt->execute();
+  }
+
+  public function insertProducts(Products $product):bool
+  {
+    $sqlQuery = "INSERT INTO tb_products (NAME, SIZE, TYPE, PRICE) VALUES (:NAME, :SIZE, :TYPE, :PRICE)";
+    $stmt = $this->connection->prepare($sqlQuery);
+    
+    $stmt->bindValue(':NAME', $product->getName(), PDO::PARAM_STR);
+    $stmt->bindValue(':SIZE', $product->getSize(), PDO::PARAM_STR);
+    $stmt->bindValue(':TYPE', $product->getType(), PDO::PARAM_STR);
+    $stmt->bindValue(':PRICE', $product->getPrice(), PDO::PARAM_INT);
+  
+    return $stmt->execute();
+  }
+
+  public function deleteProducts(int $product):bool
+  {
+    $sqlQuery = "DELETE FROM tb_products WHERE ID = :ID";
+    $stmt = $this->connection->prepare($sqlQuery);
+    $stmt->bindValue(':ID', $product, PDO::PARAM_INT);
+
+    return $stmt->execute();
   }
 
   public function hydrateResults(PDOStatement $stmt):array
