@@ -16,10 +16,11 @@ Class ProductsRepository implements ContractProductsRepository
     $this->connection = $connection;
   }
 
-  public function products():array
+  public function products(string $type):array
   {
-    $sqlQuery = 'SELECT * FROM tb_products';
-    $stmt =$this->connection->query($sqlQuery);
+    $sqlQuery = "SELECT * FROM tb_products WHERE TYPE LIKE '$type%'";
+    $stmt = $this->connection->prepare($sqlQuery);
+    $stmt->execute();
     return $this->hydrateResults($stmt);
     
   }
@@ -60,11 +61,11 @@ Class ProductsRepository implements ContractProductsRepository
     return $stmt->execute();
   }
 
-  public function deleteProducts(int $product):bool
+  public function removeProducts(Products $product):bool
   {
     $sqlQuery = "DELETE FROM tb_products WHERE ID = :ID";
     $stmt = $this->connection->prepare($sqlQuery);
-    $stmt->bindValue(':ID', $product, PDO::PARAM_INT);
+    $stmt->bindValue(':ID', $product->getId(), PDO::PARAM_INT);
 
     return $stmt->execute();
   }
